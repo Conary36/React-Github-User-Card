@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import axios from 'axios';
+import UserCard from '../src/components/UserCard';
 
 class App extends React.Component {
     constructor(){
@@ -13,29 +14,42 @@ class App extends React.Component {
     }
 
     componentDidMount(){
-      
+      //data for my github account
         axios
-          .get("https://api.github.com/users/")
+          .get("https://api.github.com/users/Conary36")
           .then(res => {
               console.log(res.data);
-              const newUserRequest = res.data;
-              this.setState({ ...this.state, githubUser: newUserRequest });
-
-              
+              this.setState({ ...this.state, githubUser: res.data });
           })
           .catch(err => {
             console.error('Error', err);
-          })
+          });
+          
+          //data for my github followers
+          axios
+            .get("https://api.github.com/users/Conary36/followers")
+            .then(follower => {
+                console.log(follower.data);
+                this.setState({...this.state, userFollowers: follower.data});
+            })
+            .catch(err => {
+                console.error('Something is wrong', err);
+            })
+
+
           
     };
 
+  
+
   render(){
   return (
-    <div className="App">
+    // <div className="App">
 
 
-      
-    </div>
+      <UserCard url={this.state.image} name={this.state.name} id={this.state.id} html_url={this.state.html_url} repos_url={this.state.repos_url}/>
+  
+    // </div>
     );
 }
 }
