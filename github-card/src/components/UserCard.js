@@ -1,19 +1,33 @@
 import React from 'react'
 import styled from 'styled-components'
 
-export default function UserCard ({name,id,avatar_url,html_url,repos_url}){
+ const ImgDiv = styled.div`
+   display: flex;
+   flex-flow: column nowrap;
+   align-items: center;
+   position: relative;
+
+ `;
+ const Pic = styled.img`
+    height: 10vhw;
+    width: 10vhw;
+ `
+
+export default function UserCard ({name,login,url,followers,location}){
+
+   
 
 
     return(
         <section>
+            <ImgDiv>
+                <Pic src={url} alt='github-user'/>
+            </ImgDiv>
             <div>
-                <img src={avatar_url} alt='github-user'/>
-            </div>
-            <div>
-                <h1>Name: {name}</h1>
-                <p>Id: {id}</p>
-                <p>Git-URL: {html_url}</p>
-                <p>Repositories: {repos_url}</p>
+                <h2>Name: {name}</h2>
+                <p>Login: {login}</p>
+                <p>Followers: {followers}</p>
+                <p>Location: {location}</p>
             </div>
         </section>
     

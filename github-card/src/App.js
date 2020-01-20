@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import axios from 'axios';
 import UserCard from '../src/components/UserCard';
+import UserFollowers from './components/UserFollowers'
 
 class App extends React.Component {
     constructor(){
@@ -19,7 +20,14 @@ class App extends React.Component {
           .get("https://api.github.com/users/Conary36")
           .then(res => {
               console.log(res.data);
-              this.setState({ ...this.state, githubUser: res.data });
+              this.setState({ 
+                image: res.data.avatar_url,
+                name: res.data.name,
+                login: res.data.login,
+                followers: res.data.followers,
+                location: res.data.location
+               });
+               console.log(this.state);
           })
           .catch(err => {
             console.error('Error', err);
@@ -30,13 +38,11 @@ class App extends React.Component {
             .get("https://api.github.com/users/Conary36/followers")
             .then(follower => {
                 console.log(follower.data);
-                this.setState({...this.state, userFollowers: follower.data});
+                this.setState({ userFollowers: follower.data, githubUser: follower.data});
             })
             .catch(err => {
                 console.error('Something is wrong', err);
-            })
-
-
+            });
           
     };
 
@@ -44,12 +50,24 @@ class App extends React.Component {
 
   render(){
   return (
-    // <div className="App">
+    <div className="App">
 
+      <UserCard url={this.state.image} name={this.state.name} login={this.state.login} followers={this.state.followers} location={this.state.location}/>
+      
+      {this.state.userFollowers.map(e => {
 
-      <UserCard url={this.state.image} name={this.state.name} id={this.state.id} html_url={this.state.html_url} repos_url={this.state.repos_url}/>
-  
-    // </div>
+        return (
+          <UserFollowers
+            image={e.avatar_url}
+            name={e.login}
+            followers_url={e.followers_url}
+            organizations_url={e.organizations_url}
+          />
+        );
+      })
+
+      }
+    </div>
     );
 }
 }
